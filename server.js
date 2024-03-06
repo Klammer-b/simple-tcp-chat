@@ -19,6 +19,11 @@ server.on('connection', async (socket) => {
     socket,
   });
 
+  // client socket error handler
+  socket.on('error', (err) => {
+    console.error(`Socket error (Client ID: ${clientId}):`, err.message);
+  });
+
   socket.on('data', async (data) => {
     await broadcastMessage(JSON.parse(data.toString()));
   });
@@ -43,6 +48,11 @@ server.on('connection', async (socket) => {
     user: { id: clientId },
     type: ACTION_TYPES.USER_JOINED,
   });
+});
+
+// server error handler
+server.on('error', (err) => {
+  console.error(`Server error:`, err.message);
 });
 
 server.listen(3099, '127.0.0.1', () => {
