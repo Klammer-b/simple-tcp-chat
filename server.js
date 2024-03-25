@@ -21,7 +21,11 @@ server.on('connection', async (socket) => {
 
   // client socket error handler
   socket.on('error', (err) => {
-    console.error(`Socket error (Client ID: ${clientId}):`, err.message);
+      if (err.code === 'ECONNRESET') {
+      console.log(`Client ID: ${clientId} has disconnected unexpectedly.`);
+      } else {
+      console.error(`Socket error (Client ID: ${clientId}):`, err.message);
+      }
   });
 
   socket.on('data', async (data) => {
